@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemDataInitializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">juint</a> &gt; <a href="index.source.html" class="el_package">com.learn.reactive</a> &gt; <span class="el_source">ItemDataInitializer.java</span></div><h1>ItemDataInitializer.java</h1><pre class="source lang-java linenums">package com.learn.reactive;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+import com.learn.reactive.document.ItemDTO;
+import com.learn.reactive.document.SubItemDTO;
+import com.learn.reactive.repository.IItemCommandRepository;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
+
+@Component
+@Profile(&quot;!test&quot;)
+<span class="nc" id="L21">public class ItemDataInitializer implements CommandLineRunner {</span>
+
+    @Autowired
+    IItemCommandRepository itemReactiveRepository;
+    
+
+    @Override
+    public void run(String... args) throws Exception {
+
+<span class="nc" id="L30">        initalDataSetUp();</span>
+<span class="nc" id="L31">    }</span>
+
+   
+
+    public static List&lt;ItemDTO&gt;  data() {
+
+<span class="fc" id="L37">    	List&lt;SubItemDTO&gt; subItemSAMList= Arrays.asList(new SubItemDTO(&quot;SAMTV&quot;,&quot;SAMTV&quot;),</span>
+		new SubItemDTO(&quot;SAMTV1&quot;,&quot;SAMTV1&quot;),
+		new SubItemDTO(&quot;SAMTV2&quot;,&quot;SAMTV2&quot;));
+    	
+<span class="fc" id="L41">    	List&lt;SubItemDTO&gt; subItemLGList=    	</span>
+<span class="fc" id="L42">    	Arrays.asList(new SubItemDTO(&quot;LGTV&quot;,&quot;LGTV&quot;),</span>
+				new SubItemDTO(&quot;LGTV1&quot;,&quot;LGTV1&quot;),
+				new SubItemDTO(&quot;LGTV2&quot;,&quot;LGTV2&quot;)
+				);
+<span class="fc" id="L46">    	List&lt;SubItemDTO&gt; subItemAPPWATCHList=    	</span>
+<span class="fc" id="L47">    	Arrays.asList(new SubItemDTO(&quot;APPWATCH&quot;,&quot;APPWATCH&quot;),</span>
+				new SubItemDTO(&quot;APPWATCH1&quot;,&quot;APPWATCH1&quot;),
+				new SubItemDTO(&quot;APPWATCH2&quot;,&quot;APPWATCH&quot;));
+		
+<span class="fc" id="L51">    	List&lt;SubItemDTO&gt; subItemBeatsList=    	</span>
+<span class="fc" id="L52">		Arrays.asList(new SubItemDTO(&quot;Beats&quot;,&quot;Beats&quot;),</span>
+				new SubItemDTO(&quot;Beats1&quot;,&quot;Beats1&quot;),
+				new SubItemDTO(&quot;Beats2&quot;,&quot;Beats2&quot;)
+		);
+    	
+<span class="fc" id="L57">        return Arrays.asList(new ItemDTO(&quot;ID1&quot;, &quot;Samsung TV&quot;, 399.99,subItemSAMList,new Date(),new Date()),</span>
+<span class="fc" id="L58">                new ItemDTO(&quot;ID2&quot;, &quot;LG TV&quot;, 329.99,subItemLGList,new Date(),new Date()),</span>
+<span class="fc" id="L59">                new ItemDTO(&quot;ID3&quot;, &quot;Apple Watch&quot;, 349.99,subItemAPPWATCHList,new Date(),new Date()),</span>
+<span class="fc" id="L60">                new ItemDTO(&quot;ID4&quot;, &quot;Beats HeadPhones&quot;, 149.99,subItemBeatsList,new Date(),new Date()));</span>
+        
+    }
+    
+
+
+    private void initalDataSetUp() {
+    	
+<span class="nc" id="L68">    	itemReactiveRepository.deleteAll()</span>
+<span class="nc" id="L69">        .thenMany(Flux.fromIterable(data()))</span>
+<span class="nc" id="L70">                .flatMap(itemReactiveRepository::save)</span>
+<span class="nc" id="L71">                .thenMany(itemReactiveRepository.findAll())</span>
+<span class="nc" id="L72">                .subscribe((item -&gt; {</span>
+<span class="nc" id="L73">                    System.out.println(&quot;Item inserted from CommandLineRunner : &quot; + item);</span>
+<span class="nc" id="L74">                }));</span>
+
+<span class="nc" id="L76">    }</span>
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

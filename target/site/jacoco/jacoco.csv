@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+juint,com.learn.reactive.wrapper,ItemQueryWrapper,41,22,0,0,9,5,5,3,5,3
+juint,com.learn.reactive.wrapper,ItemCommandWrapper,11,76,0,0,3,14,0,8,0,8
+juint,com.learn.reactive.service,ItemQueryService,64,26,0,0,17,7,7,3,7,3
+juint,com.learn.reactive.service,ItemCommandService,0,31,0,0,0,6,0,6,0,6
+juint,com.learn.reactive.service,OrderResponseService,9,17,0,0,1,4,1,5,1,5
+juint,com.learn.reactive,ItemDataInitializer,38,184,0,0,11,11,4,1,4,1
+juint,com.learn.reactive.controller,ItemQueryController,14,8,0,0,3,2,3,2,3,2
+juint,com.learn.reactive.controller,ItemCommandController,27,0,0,0,9,0,4,0,4,0
+juint,com.learn.reactive.controller,ItemQueryController2,0,7,0,0,0,2,0,2,0,2
+juint,com.learn.reactive.dao,ItemQueryDao,0,20,0,0,0,5,0,5,0,5
+juint,com.learn.reactive.dao,ItemCommandDao,31,13,0,0,6,3,2,3,2,3

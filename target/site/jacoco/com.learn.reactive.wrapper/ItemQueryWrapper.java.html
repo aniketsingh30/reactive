@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemQueryWrapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">juint</a> &gt; <a href="index.source.html" class="el_package">com.learn.reactive.wrapper</a> &gt; <span class="el_source">ItemQueryWrapper.java</span></div><h1>ItemQueryWrapper.java</h1><pre class="source lang-java linenums">package com.learn.reactive.wrapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.learn.reactive.bean.Item;
+import com.learn.reactive.dao.IItemQueryDao;
+import com.learn.reactive.document.ItemDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+<span class="fc" id="L13">public class ItemQueryWrapper implements IItemQueryWrapper{</span>
+	@Autowired
+	IItemQueryDao itemQueryDao;
+	
+	@Autowired
+	ObjectMapper objectMapper;
+	public Mono&lt;String&gt; getHello() throws Exception {
+<span class="nc" id="L20">		return itemQueryDao.getHello();</span>
+	}
+	@Override
+	public Flux&lt;Item&gt; findAll() {
+<span class="nc" id="L24">		Flux&lt;ItemDTO&gt;  itemDtoFlux = itemQueryDao.findAll();</span>
+<span class="nc" id="L25">		 return itemDtoFlux.map(itemDto-&gt;{</span>
+<span class="nc" id="L26">			Item item = objectMapper.convertValue(itemDto, Item.class);</span>
+<span class="nc" id="L27">			return item;</span>
+		});
+	}
+	@Override
+	public Mono&lt;Item&gt; getItemById(String id) {
+<span class="fc" id="L32">		Mono&lt;ItemDTO&gt;  itemDtoMono = itemQueryDao.findById(id);</span>
+<span class="fc" id="L33">		 return itemDtoMono.map(itemDto-&gt;{</span>
+<span class="fc" id="L34">			Item item = objectMapper.convertValue(itemDto, Item.class);</span>
+<span class="fc" id="L35">			return item;</span>
+		});
+	}
+	@Override
+	public Mono&lt;Item&gt; getItemByDescription(String description) {
+<span class="nc" id="L40">		Mono&lt;ItemDTO&gt;  itemDtoMono = itemQueryDao.findItemByDescription(description);</span>
+<span class="nc" id="L41">		 return itemDtoMono.map(itemDto-&gt;{</span>
+<span class="nc" id="L42">			Item item = objectMapper.convertValue(itemDto, Item.class);</span>
+<span class="nc" id="L43">			return item;</span>
+		});
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

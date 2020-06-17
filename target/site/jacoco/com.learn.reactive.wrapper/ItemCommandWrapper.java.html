@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemCommandWrapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">juint</a> &gt; <a href="index.source.html" class="el_package">com.learn.reactive.wrapper</a> &gt; <span class="el_source">ItemCommandWrapper.java</span></div><h1>ItemCommandWrapper.java</h1><pre class="source lang-java linenums">package com.learn.reactive.wrapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.learn.reactive.bean.Item;
+import com.learn.reactive.dao.IItemCommandDao;
+import com.learn.reactive.dao.IItemQueryDao;
+import com.learn.reactive.document.ItemDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
+@Service
+<span class="fc" id="L16">@Slf4j</span>
+<span class="fc" id="L17">public class ItemCommandWrapper implements IItemCommandWrapper {</span>
+
+	@Autowired
+	IItemCommandDao itemCommandDao;
+
+	@Autowired
+	IItemQueryDao itemQueryDao;
+
+	@Autowired
+	ObjectMapper objectMapper;
+
+	@Override
+	public Mono&lt;Item&gt; save(Item item) throws Exception {
+<span class="fc" id="L30">		ItemDTO itemDto = objectMapper.convertValue(item, ItemDTO.class);</span>
+<span class="fc" id="L31">		return itemCommandDao.save(itemDto).map(currentItemDto -&gt; {</span>
+<span class="fc" id="L32">			Item currentItem = objectMapper.convertValue(currentItemDto, Item.class);</span>
+<span class="fc" id="L33">			return currentItem;</span>
+		});
+	}
+
+	@Override
+	public Mono&lt;Item&gt; update(Item item, String id) throws Exception, RuntimeException {
+<span class="fc" id="L39">		return itemQueryDao.findById(id).flatMap(currentItemDTO -&gt; {</span>
+<span class="fc" id="L40">			currentItemDTO.setDescription(item.getDescription());</span>
+<span class="fc" id="L41">			currentItemDTO.setExpiryDate(item.getExpiryDate());</span>
+<span class="fc" id="L42">			currentItemDTO.setManufactureDate(item.getManufactureDate());</span>
+<span class="fc" id="L43">			currentItemDTO.setPrice(item.getPrice());</span>
+			try {
+<span class="fc" id="L45">				return itemCommandDao.save(currentItemDTO).map(currentItemDTO1 -&gt; {</span>
+<span class="fc" id="L46">					return objectMapper.convertValue(currentItemDTO1, Item.class);</span>
+				});
+<span class="nc" id="L48">			} catch (Exception e) {</span>
+<span class="nc" id="L49">				log.error(&quot;Error while saving an Item&gt;&gt;&quot;, e.getMessage());</span>
+<span class="nc" id="L50">				throw new RuntimeException(e);</span>
+			}
+		});
+
+	}
+
+	@Override
+	public Mono&lt;Void&gt; deleteById(String id) throws Exception {
+<span class="fc" id="L58">		return itemCommandDao.deleteById(id);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

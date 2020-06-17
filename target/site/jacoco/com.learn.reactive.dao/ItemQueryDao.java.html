@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemQueryDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">juint</a> &gt; <a href="index.source.html" class="el_package">com.learn.reactive.dao</a> &gt; <span class="el_source">ItemQueryDao.java</span></div><h1>ItemQueryDao.java</h1><pre class="source lang-java linenums">package com.learn.reactive.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.learn.reactive.document.ItemDTO;
+import com.learn.reactive.repository.IItemQueryRepoitory;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+<span class="fc" id="L11">public class ItemQueryDao implements IItemQueryDao{</span>
+	@Autowired
+	IItemQueryRepoitory itemQueryRepoitory;
+	public Mono&lt;String&gt; getHello() {
+<span class="fc" id="L15">		return Mono.just(&quot;Hello, Aniket!&quot;);</span>
+	}
+
+	@Override
+	public Flux&lt;ItemDTO&gt; findAll() {
+<span class="fc" id="L20">		return itemQueryRepoitory.findAll();</span>
+	}
+
+	@Override
+	public Mono&lt;ItemDTO&gt; findById(String id) {
+<span class="fc" id="L25">		return itemQueryRepoitory.findById(id);</span>
+	}
+
+	@Override
+	public Mono&lt;ItemDTO&gt; findItemByDescription(String description) {
+<span class="fc" id="L30">		return itemQueryRepoitory.findItemByDescription(description);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
